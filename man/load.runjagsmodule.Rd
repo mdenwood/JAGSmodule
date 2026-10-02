@@ -112,9 +112,7 @@ load.JAGSmodule()
 list.modules()
 
 # A simple model to sample from a Lomax distribution.
-m <- "model{
- L ~ dlomax(1,1)
-		}"
+m <- "model{ L ~ dlomax(1,1) }"
 jags.model(textConnection(m))
 }
 \references{

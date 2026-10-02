@@ -4,7 +4,7 @@ Version: 0.9.0-1
 Date: 2026-10-02
 Authors@R: person("Matthew", "Denwood", role=c("aut","cre"), email="md@sund.ku.dk")
 Description: This R package shows how to configure a JAGS extension module for
-  compatibility with the new (as of October 2026) facilities within rjags
+  compatibility with the new (as of October 2026) facilities within rjags.
 URL: https://github.com/mdenwood/JAGSmodule
 License: GPL (>= 2)
 Encoding: UTF-8
