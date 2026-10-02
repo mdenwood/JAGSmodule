@@ -10,8 +10,7 @@ License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 SystemRequirements: JAGS >= 4.3.0 (https://mcmc-jags.sourceforge.io/)
-Depends:
-    R (>= 2.14.0)
+Additional_repositories: "https://ku-awdc.github.io/drat/"
 Imports:
     rjags (>= 4-18)
 Language: en-GB
