@@ -12,6 +12,7 @@ Roxygen: list(markdown = TRUE)
 SystemRequirements: JAGS >= 4.3.0 (https://mcmc-jags.sourceforge.io/)
 Additional_repositories: "https://ku-awdc.github.io/drat/"
 Imports:
-    rjags (>= 4-18)
+  rjags (>= 4-18)
+LinkingTo: rjags (>= 4-18)
 Language: en-GB
 Config/roxygen2/version: 8.1.0
