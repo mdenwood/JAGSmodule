@@ -1,0 +1,94 @@
+/*
+	Copyright (C) 2013 Matthew Denwood <matthewdenwood@mac.com>
+	
+	This code creates a JAGS module from the distributions provided
+
+    This file is part of runjags
+
+	This code is based on the source code for JAGS and the following tutorial:
+	Wabersich, D., Vandekerckhove, J., 2013. Extending JAGS: A tutorial on 
+	adding custom distributions to JAGS (with a diffusion model example). 
+	Behavior Research Methods.
+	JAGS is Copyright (C) 2002-10 Martyn Plummer, licensed under GPL-2
+
+	This version of the module is compatible with JAGS version >= 4
+	
+    runjags is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    runjags is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with runjags  If not, see <http://www.gnu.org/licenses/>.
+	
+ */
+
+#include <module/Module.h>
+
+#include <function/DFunction.h>
+#include <function/PFunction.h>
+#include <function/QFunction.h>
+
+//#include "functions/myfun.h"
+#include "DLomax.h"
+#include "DMouchel.h"
+#include "DGenPar.h"
+#include "DHalfCauchy.h"
+
+using std::vector;
+
+namespace jags {
+namespace JAGSmodule {
+
+	class MyModule : public Module {
+	  public:
+	    MyModule();
+	    ~MyModule();
+		
+		void Rinsert(RScalarDist *dist);
+	};
+
+MyModule::MyModule() : Module("JAGSmodule")
+{
+  // insert is the standard way to add a distribution or function
+  // insert(new myfun);
+  // insert(new mydist);
+  
+  // Rinsert adds the distribution, as well as d,f,q functions simultaneously:
+  Rinsert(new DLomax);
+  Rinsert(new DMouchel);
+  Rinsert(new DGenPar);
+  Rinsert(new DHalfCauchy);
+
+}
+
+void MyModule::Rinsert(RScalarDist *dist)
+{
+	insert(dist);    
+	insert(new DFunction(dist));
+	insert(new PFunction(dist));
+	insert(new QFunction(dist));
+}
+
+
+MyModule::~MyModule()
+{
+  vector<Function*> const &fvec = functions();
+  for (unsigned int i = 0; i < fvec.size(); ++i) {
+    delete fvec[i];
+  }
+  vector<Distribution*> const &dvec = distributions();
+  for (unsigned int i = 0; i < dvec.size(); ++i) {
+    delete dvec[i];
+  }
+}
+
+}  // namespace JAGSmodule
+}  // namespace jags
+
+jags::JAGSmodule::MyModule _my_module;

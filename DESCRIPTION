@@ -1,0 +1,18 @@
+Package: JAGSmodule
+Title: Minimal Example of a JAGS Module
+Version: 0.9.0-1
+Date: 2026-10-02
+Authors@R: person("Matthew", "Denwood", role=c("aut","cre"), email="md@sund.ku.dk")
+Description: This R package shows how to configure a JAGS extension module for
+  compatibility with the new (as of October 2026) facilities within rjags
+URL: https://github.com/mdenwood/JAGSmodule
+License: GPL (>= 2)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+SystemRequirements: JAGS >= 4.3.0 (https://mcmc-jags.sourceforge.io/)
+Depends:
+    R (>= 2.14.0)
+Imports:
+    rjags (>= 4-18)
+Language: en-GB
+Config/roxygen2/version: 8.1.0
