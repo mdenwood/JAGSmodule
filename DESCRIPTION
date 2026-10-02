@@ -1,6 +1,6 @@
 Package: JAGSmodule
 Title: Minimal Example of a JAGS Module
-Version: 0.9.0-1
+Version: 0.9.0-2
 Date: 2026-10-02
 Authors@R: person("Matthew", "Denwood", role=c("aut","cre"), email="md@sund.ku.dk")
 Description: This R package shows how to configure a JAGS extension module for
