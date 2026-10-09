@@ -113,8 +113,7 @@
 #'
 #' @examples
 #' library("rjags")
-#' list.modules()
-#' # Load the module for use with any rjags model:
+#' # Ensure the module is loaded:
 #' load.JAGSmodule()
 #' list.modules()
 #'
@@ -126,7 +125,7 @@
 #' @export
 load.JAGSmodule <- function(){
 
-  rjags::load.pkg.module("JAGSmodule", pkg_compile_flags)
+  rjags::load.pkg.module("JAGSmodule", bin.compat=pkg_compile_flags)
 
 }
 

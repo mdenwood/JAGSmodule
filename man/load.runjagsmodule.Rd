@@ -106,8 +106,7 @@ For an easier to read version of these PDF equations, see the userguide vignette
 }
 \examples{
 library("rjags")
-list.modules()
-# Load the module for use with any rjags model:
+# Ensure the module is loaded:
 load.JAGSmodule()
 list.modules()
 

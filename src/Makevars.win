@@ -1,0 +1,8 @@
+# Ensure immediate evaluation:
+JAGS_LIBS := $(shell "$(R_HOME)/bin/Rscript" -e "rjags::pkg.compile.flags('LIBS')")
+JAGS_CXXFLAGS := $(shell "$(R_HOME)/bin/Rscript" -e "rjags::pkg.compile.flags('CXXFLAGS')")
+JAGS_CPPFLAGS := $(shell "$(R_HOME)/bin/Rscript" -e "rjags::pkg.compile.flags('CPPFLAGS')")
+
+PKG_LIBS = $(JAGS_LIBS)
+PKG_CXXFLAGS = $(JAGS_CXXFLAGS)
+PKG_CPPFLAGS = $(JAGS_CPPFLAGS)
