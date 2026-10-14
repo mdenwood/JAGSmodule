@@ -7,18 +7,25 @@
 
 .onLoad <- function(libname, pkgname){
 
+  # First try to load rjags:
+  tryCatch({
+    if(!isNamespaceLoaded("rjags")) loadNamespace("rjags")
+  }, error = function(e) {
+    stop("The following error was obtained when attaching rjags:\n\t", conditionMessage(e), call.=FALSE)
+  })
+
   # Preserve the name of the package for use in .onUnload etc:
   .jags_pkg_env$pkgname <- pkgname
   .jags_pkg_env$libname <- libname
 
   # This will fail if running roxygen but allow proceeding:
   tryCatch({
-    # First allow rjags to check for the presence of JAGS and load the module:
-    suppressMessages(rjags::load.pkg.module(pkgname, libname, .jags_pkg_env$pkg_compile_flags))
-    # Then load the rest of the dynamic library:
+    # First load the dynamic library:
     library.dynam(pkgname, pkgname, libname)
     # And set the dyn_loaded flag to TRUE:
     .jags_pkg_env$dyn_loaded <- TRUE
+    # Then load the module:
+    suppressMessages(rjags::load.pkg.module(pkgname, libname, .jags_pkg_env$pkg_compile_flags))
 
   }, error = function(e) {
     warning("Failed to load the module/dynlib: this is expected during roxygenization", call.=FALSE)
