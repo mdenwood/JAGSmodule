@@ -1,10 +1,10 @@
 #' Load the internal JAGS module provided by runjags
 #'
-#' @name load.JAGSmodule
-#' @aliases load.JAGSmodule unload.JAGSmodule
+#' @name load_JAGSmodule
+#' @aliases load_JAGSmodule unload_JAGSmodule
 #'
 #' @description
-#' The runjags package contains a JAGS extension module that provides several additional distributions for use within JAGS (see details below).  This function is a simple wrapper to load this module.  The version of the module supplied within the runjags package can only be used with the rjags package, or with the rjags or rjparallel methods within runjags.  For a standalone JAGS module for use with any JAGS method (or independent JAGS runs) please see:  https://sourceforge.net/projects/runjags/files/paretoprior/
+#' The runjags package contains a JAGS extension module that provides several additional distributions for use within JAGS (see details below).  For now, this is duplicated within the JAGSmodule package for testing and demonstration purposes.
 #'
 #' @details
 #' This module provides the following distributions for JAGS:
@@ -106,34 +106,39 @@
 #'
 #' @keywords methods
 #' @seealso
-#' \code{\link[rjags]{load.module}}
+#' \code{\link[rjags]{load.pkg.module}}
 #'
 #' @references
 #' Denwood, M.J. 2016. runjags: An R Package Providing Interface Utilities, Model Templates, Parallel Computing Methods and Additional Distributions for MCMC Models in JAGS. J. Stat. Softw. 71. doi:10.18637/jss.v071.i09.
 #'
 #' @examples
 #' library("rjags")
-#' # Ensure the module is loaded:
-#' load.JAGSmodule()
+#' # The JAGS module is loaded when the package is attached:
+#' list.modules()
+#' # But can be unloaded:
+#' unload_JAGSmodule()
+#' list.modules()
+#' # And re-loaded:
+#' load_JAGSmodule()
 #' list.modules()
 #'
-#' # A simple model to sample from a Lomax distribution.
+#' # A simple model using the package module:
 #' m <- "model{ L ~ dlomax(1,1) }"
 #' jags.model(textConnection(m))
 
-#' @rdname load.runjagsmodule
+#' @rdname load_JAGSmodule
 #' @export
-load.JAGSmodule <- function(){
+load_JAGSmodule <- function(){
 
-  rjags::load.pkg.module("JAGSmodule", bin.compat=pkg_compile_flags)
+  rjags::load.pkg.module(.jags_pkg_env$pkgname, .jags_pkg_env$libname, .jags_pkg_env$pkg_compile_flags)
 
 }
 
-#' @rdname load.runjagsmodule
+#' @rdname load_JAGSmodule
 #' @export
-unload.JAGSmodule <- function(){
+unload_JAGSmodule <- function(){
 
-	rjags::unload.module('JAGSmodule')
+	rjags::unload.module(.jags_pkg_env$pkgname)
 
 }
 

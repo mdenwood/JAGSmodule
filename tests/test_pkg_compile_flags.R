@@ -1,2 +1,3 @@
 rjags::pkg.compile.flags()
-JAGSmodule:::pkg_compile_flags
+JAGSmodule:::.jags_pkg_env$pkg_compile_flags
+
