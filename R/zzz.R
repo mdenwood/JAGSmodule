@@ -18,18 +18,22 @@
   .jags_pkg_env$pkgname <- pkgname
   .jags_pkg_env$libname <- libname
 
-  # This will fail if running roxygen but allow proceeding:
-  tryCatch({
-    # First load the dynamic library:
-    library.dynam(pkgname, pkgname, libname)
-    # And set the dyn_loaded flag to TRUE:
-    .jags_pkg_env$dyn_loaded <- TRUE
-    # Then load the module:
-    suppressMessages(rjags::load.pkg.module(pkgname, libname, .jags_pkg_env$pkg_compile_flags))
+  # The dynlib isn't present when running roxygen:
+  if(!file.exists(file.path(libname, pkgname, "libs", paste0(pkgname, .Platform$dynlib.ext)))){
+    cat("Note: non-existant dynlib (this is expected during roxygenization)\n")
+  }else{
+    tryCatch({
+      # First load the dynamic library:
+      library.dynam(pkgname, pkgname, libname)
+      # And set the dyn_loaded flag to TRUE:
+      .jags_pkg_env$dyn_loaded <- TRUE
+      # Then load the module:
+      suppressMessages(rjags::load.pkg.module(pkgname, libname, .jags_pkg_env$pkg_compile_flags))
 
-  }, error = function(e) {
-    warning("Failed to load the module/dynlib: this is expected during roxygenization", call.=FALSE)
-  })
+    }, error = function(e) {
+      stop("Loading the module/dynlib failed with the following error:\n\t", conditionMessage(e), call.=FALSE)
+    })
+  }
 
 }
 
