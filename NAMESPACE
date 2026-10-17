@@ -3,3 +3,8 @@
 export(load_JAGSmodule)
 export(test_JAGSmodule)
 export(unload_JAGSmodule)
+importFrom(rjags,
+  list.modules,
+  load.pkg.module,
+  unload.module
+)

@@ -3,7 +3,7 @@
 \name{load_JAGSmodule}
 \alias{load_JAGSmodule}
 \alias{unload_JAGSmodule}
-\title{Load the internal JAGS module provided by runjags}
+\title{Load the internal JAGS module provided by this package}
 \usage{
 load_JAGSmodule()
 

@@ -1,4 +1,4 @@
-#' Load the internal JAGS module provided by runjags
+#' Load the internal JAGS module provided by this package
 #'
 #' @name load_JAGSmodule
 #' @aliases load_JAGSmodule unload_JAGSmodule
@@ -111,6 +111,8 @@
 #' @references
 #' Denwood, M.J. 2016. runjags: An R Package Providing Interface Utilities, Model Templates, Parallel Computing Methods and Additional Distributions for MCMC Models in JAGS. J. Stat. Softw. 71. doi:10.18637/jss.v071.i09.
 #'
+#' @importFrom rjags load.pkg.module unload.module list.modules
+#'
 #' @examples
 #' library("rjags")
 #' # The JAGS module is loaded when the package is attached:
@@ -129,16 +131,11 @@
 #' @rdname load_JAGSmodule
 #' @export
 load_JAGSmodule <- function(){
-
-  rjags::load.pkg.module(.jags_pkg_env$pkgname, .jags_pkg_env$libname, .jags_pkg_env$pkg_compile_flags)
-
+  load.pkg.module(.jags_pkg_env$pkgname, .jags_pkg_env$libname, .jags_pkg_env$pkg_compile_flags)
 }
 
 #' @rdname load_JAGSmodule
 #' @export
 unload_JAGSmodule <- function(){
-
-	rjags::unload.module(.jags_pkg_env$pkgname)
-
+	unload.module(.jags_pkg_env$pkgname)
 }
-
