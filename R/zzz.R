@@ -40,8 +40,13 @@
   .jags_pkg_env$libname <- libname
 
   # Guard against non-present dynlib when running roxygen:
-  if(file.exists(file.path(libname, pkgname, "libs",
-                            paste0(pkgname, .Platform$dynlib.ext)))){
+  if(file.exists(
+    if(.Platform$r_arch==""){
+      file.path(libname, pkgname, "libs", paste0(pkgname, .Platform$dynlib.ext))
+    }else{
+      file.path(libname, pkgname, "libs", .Platform$r_arch, paste0(pkgname, .Platform$dynlib.ext))
+    }
+  )){
     tryCatch({
       # Load the dynamic library:
       library.dynam(pkgname, pkgname, libname)
