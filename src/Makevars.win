@@ -18,9 +18,9 @@
 #  A copy of the GNU General Public License is available at
 #  http://www.r-project.org/Licenses/
 
-JAGS_LIBS := $(shell "$(R_HOME)/bin/Rscript" -e "rjags::pkg.compile.flags('LIBS')")
-JAGS_CXXFLAGS := $(shell "$(R_HOME)/bin/Rscript" -e "rjags::pkg.compile.flags('CXXFLAGS')")
-JAGS_CPPFLAGS := $(shell "$(R_HOME)/bin/Rscript" -e "rjags::pkg.compile.flags('CPPFLAGS')")
+JAGS_LIBS := $(shell "$(R_HOME)/bin$(R_ARCH_BIN)/Rscript" -e "rjags::pkg.compile.flags('LIBS')")
+JAGS_CXXFLAGS := $(shell "$(R_HOME)/bin$(R_ARCH_BIN)/Rscript" -e "rjags::pkg.compile.flags('CXXFLAGS')")
+JAGS_CPPFLAGS := $(shell "$(R_HOME)/bin$(R_ARCH_BIN)/Rscript" -e "rjags::pkg.compile.flags('CPPFLAGS')")
 
 PKG_LIBS = $(JAGS_LIBS)
 PKG_CXXFLAGS = $(JAGS_CXXFLAGS)

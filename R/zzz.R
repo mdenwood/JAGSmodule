@@ -41,43 +41,37 @@
 
   # Guard against non-present dynlib when running roxygen:
   if(file.exists(
-    if(.Platform$r_arch==""){
-      file.path(libname, pkgname, "libs", paste0(pkgname, .Platform$dynlib.ext))
-    }else{
+    if(nzchar(.Platform$r_arch)){
       file.path(libname, pkgname, "libs", .Platform$r_arch, paste0(pkgname, .Platform$dynlib.ext))
+    }else{
+      file.path(libname, pkgname, "libs", paste0(pkgname, .Platform$dynlib.ext))
     }
   )){
     tryCatch({
-      # Load the dynamic library:
+      # First load the package module, so that rjags can report on any JAGS
+      # version incompatibility:
+      rjags::load.pkg.module(pkgname, libname, .jags_pkg_env$pkg_compile_flags, quiet=TRUE)
+
+      # Then load the dynamic library:
       library.dynam(pkgname, pkgname, libname)
       # And set the dyn_loaded flag to TRUE:
       .jags_pkg_env$dyn_loaded <- TRUE
+
     }, error = function(e) {
-      stop("Loading the package dynlib failed with the following error:\n\t", conditionMessage(e), call.=FALSE)
+      if(.jags_pkg_env$pkgname %in% list.modules()){
+        unload.module(.jags_pkg_env$pkgname, quiet=TRUE)
+      }
+      stop("Loading the package module/dynlib failed with the following error:\n\t", conditionMessage(e), call.=FALSE)
     })
   }
-
 }
 
 .onAttach <- function(libname, pkgname){
   # Only attempt to load the package module if the dynlib is loaded:
-  if(.jags_pkg_env$dyn_loaded){
-    tryCatch({
-      # Load the package module:
-      suppressMessages(rjags::load.pkg.module(pkgname, libname, .jags_pkg_env$pkg_compile_flags))
-      packageStartupMessage("module ", pkgname, " loaded")
-    }, error = function(e) {
-      stop("Loading the JAGS module failed with the following error:\n\t", conditionMessage(e), call.=FALSE)
-    })
+  if(.jags_pkg_env$dyn_loaded && .jags_pkg_env$pkgname %in% list.modules()){
+    packageStartupMessage("module ", pkgname, " loaded")
   }else{
     packageStartupMessage("The JAGS module was not loaded because the package dynlib wasn't found\n(this is expected during roxygenization and with devtools::load_all)")
-  }
-}
-
-.onDetach <- function(libname){
-  # Unload the JAGS module (silently), if loaded:
-  if(.jags_pkg_env$pkgname %in% list.modules()){
-    unload.module(.jags_pkg_env$pkgname, quiet = TRUE)
   }
 }
 
