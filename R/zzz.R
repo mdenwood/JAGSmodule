@@ -38,6 +38,11 @@
     stop("The following error was obtained when loading rjags:\n\t",
          conditionMessage(e), call.=FALSE)
   })
+  # Ensure the version of rjags is compatible with what we need:
+  rjags_version <- packageVersion("rjags")
+  if(rjags_version >= "5" && rjags_version < "5.4"){
+    stop("An incompatible version of rjags (", gsub(".","-",rjags_version,fixed=TRUE), ") is installed\n\tPlease install either rjags 4-18 or rjags >= 5-4", call.=FALSE)
+  }
 
   # Guard against non-present dynlib when running roxygen:
   if(file.exists(
