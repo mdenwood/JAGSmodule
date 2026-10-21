@@ -27,6 +27,10 @@
 
 .onLoad <- function(libname, pkgname){
 
+  # Preserve the name of the package for use in .onUnload etc:
+  .jags_pkg_env$pkgname <- pkgname
+  .jags_pkg_env$libname <- libname
+
   # First try to load rjags (this sets paths on Windows etc):
   tryCatch({
     if(!isNamespaceLoaded("rjags")) loadNamespace("rjags")
@@ -34,10 +38,6 @@
     stop("The following error was obtained when loading rjags:\n\t",
          conditionMessage(e), call.=FALSE)
   })
-
-  # Preserve the name of the package for use in .onUnload etc:
-  .jags_pkg_env$pkgname <- pkgname
-  .jags_pkg_env$libname <- libname
 
   # Guard against non-present dynlib when running roxygen:
   if(file.exists(
@@ -70,18 +70,21 @@
   # Only attempt to load the package module if the dynlib is loaded:
   if(.jags_pkg_env$dyn_loaded && .jags_pkg_env$pkgname %in% list.modules()){
     packageStartupMessage("module ", pkgname, " loaded")
+  }else if(.jags_pkg_env$dyn_loaded){
+    packageStartupMessage("The JAGS module ", pkgname, " was unloaded before the package was attached")
   }else{
-    packageStartupMessage("The JAGS module was not loaded because the package dynlib wasn't found\n(this is expected during roxygenization and with devtools::load_all)")
+    packageStartupMessage("The JAGS module and package dynlib for ", pkgname, " failed to load\n(this is expected during roxygenization and with devtools::load_all)")
   }
 }
 
 .onUnload <- function(libname){
-  # First unload the JAGS module (silently), if loaded:
-  if(.jags_pkg_env$pkgname %in% list.modules()){
-    unload.module(.jags_pkg_env$pkgname, quiet = TRUE)
-  }
-  # Then the dynlib, if loaded by .onLoad:
+  # Ignore if the dynlib failed to load at startup:
   if(.jags_pkg_env$dyn_loaded){
+    # First unload the JAGS module (silently), if loaded:
+    if(.jags_pkg_env$pkgname %in% list.modules()){
+      unload.module(.jags_pkg_env$pkgname, quiet = TRUE)
+    }
+    # Then the dynlib:
     library.dynam.unload(.jags_pkg_env$pkgname, libname)
   }
 }
