@@ -112,6 +112,7 @@
 #' Denwood, M.J. 2016. runjags: An R Package Providing Interface Utilities, Model Templates, Parallel Computing Methods and Additional Distributions for MCMC Models in JAGS. J. Stat. Softw. 71. doi:10.18637/jss.v071.i09.
 #'
 #' @importFrom rjags load.pkg.module unload.module list.modules
+#' @importFrom utils packageVersion
 #'
 #' @examples
 #' library("rjags")

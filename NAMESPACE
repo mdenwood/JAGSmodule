@@ -8,3 +8,4 @@ importFrom(rjags,
   load.pkg.module,
   unload.module
 )
+importFrom(utils,packageVersion)
