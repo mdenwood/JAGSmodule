@@ -131,12 +131,12 @@
 
 #' @rdname load_JAGSmodule
 #' @export
-load_JAGSmodule <- function(){
-  load.pkg.module(.jags_pkg_env$pkgname, .jags_pkg_env$libname, .jags_pkg_env$pkg_compile_flags)
+load_JAGSmodule <- function(quiet = FALSE){
+  load.pkg.module(.jags_pkg_env$pkgname, .jags_pkg_env$libname, .jags_pkg_env$pkg_compile_flags, quiet=quiet)
 }
 
 #' @rdname load_JAGSmodule
 #' @export
-unload_JAGSmodule <- function(){
-	unload.module(.jags_pkg_env$pkgname)
+unload_JAGSmodule <- function(quiet = FALSE){
+	unload.module(.jags_pkg_env$pkgname, quiet=quiet)
 }
