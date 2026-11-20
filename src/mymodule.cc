@@ -28,6 +28,14 @@
 	
  */
 
+// Ensure JAGS was found:
+#if defined(__has_include)
+  #if !__has_include(<version.h>)
+    #error "The compiler flags for JAGS were not passed correctly - check that rjags is functional"
+  #endif
+#endif
+
+
 #include <module/Module.h>
 
 #include <function/DFunction.h>
