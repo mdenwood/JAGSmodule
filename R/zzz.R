@@ -31,19 +31,6 @@
   .jags_pkg_env$pkgname <- pkgname
   .jags_pkg_env$libname <- libname
 
-  # First try to load rjags (this sets paths on Windows etc):
-  tryCatch({
-    if(!isNamespaceLoaded("rjags")) loadNamespace("rjags")
-  }, error = function(e) {
-    stop("The following error was obtained when loading rjags:\n\t",
-         conditionMessage(e), call.=FALSE)
-  })
-  # Ensure the version of rjags is compatible with what we need:
-  rjags_version <- utils::packageVersion("rjags")
-  if(rjags_version >= "5" && rjags_version < "5.4"){
-    stop("An incompatible version of rjags (", gsub(".","-",rjags_version,fixed=TRUE), ") is installed\n\tPlease install either rjags 4-18 or rjags >= 5-4", call.=FALSE)
-  }
-
   # Guard against non-present dynlib when running roxygen:
   if(file.exists(
     if(nzchar(.Platform$r_arch)){
@@ -55,7 +42,7 @@
     tryCatch({
       # First load the package module, so that rjags can report on any JAGS
       # version incompatibility:
-      rjags::load.pkg.module(pkgname, libname, .jags_pkg_env$pkg_compile_flags, quiet=TRUE)
+      load.pkg.module(pkgname, libname, .jags_pkg_env$pkg_compile_flags, quiet=TRUE)
 
       # Then load the dynamic library:
       library.dynam(pkgname, pkgname, libname)
@@ -66,7 +53,7 @@
       if(.jags_pkg_env$pkgname %in% list.modules()){
         unload.module(.jags_pkg_env$pkgname, quiet=TRUE)
       }
-      stop("Loading the package module/dynlib failed with the following error:\n\t", conditionMessage(e), call.=FALSE)
+      stop("Loading the ", pkgname, " package module/dynlib failed with the following error:\n\t", conditionMessage(e), call.=FALSE)
     })
   }
 }

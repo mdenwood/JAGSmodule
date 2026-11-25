@@ -5,9 +5,9 @@
 \alias{unload_JAGSmodule}
 \title{Load the internal JAGS module provided by this package}
 \usage{
-load_JAGSmodule()
+load_JAGSmodule(quiet = FALSE)
 
-unload_JAGSmodule()
+unload_JAGSmodule(quiet = FALSE)
 }
 \description{
 The runjags package contains a JAGS extension module that provides several additional distributions for use within JAGS (see details below).  For now, this is duplicated within the JAGSmodule package for testing and demonstration purposes.
